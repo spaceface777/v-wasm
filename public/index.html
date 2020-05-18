@@ -4,23 +4,87 @@
 		<meta charset="utf-8">
 		<title>V WASM Test</title>
 		<script type="module">
+			import {CodeJar} from "https://cdn.pika.dev/codejar@2.0.0"
+			import Prism from "https://cdn.pika.dev/prismjs@1.20.0"
+			
+			Prism.languages.v =
+			{
+				comment:
+				[
+					{
+						pattern: /\/\*[^]*?(?:\*\/|$)/,
+						lookbehind: true,
+					},
+					{
+						pattern: /\/\/.*/,
+						lookbehind: true,
+						greedy: true,
+					},
+				],
+				prefix: /\bJS\b/,
+				string:
+				{
+					pattern: /(["'])(?:\\.|(?!\1).)*\1/,
+					greedy: true,
+				},
+				type:
+				{
+					pattern: /\b(?:bool|string|i8|i16|int|i64|i128|byte|u16|u32|u64|u128|rune|f32|f64|byteptr|voidptr|any|[A-Z][A-Za-z]*)\b/,
+					lookbehind: true,
+				},
+				keyword: /\b(?:break|const|continue|defer|else|enum|fn|for|go|goto|if|import|in|interface|match|module|none|or|pub|return|struct|type|mut)\b/,
+				boolean: /\b(?:true|false)\b/,
+				function: /\w+(?=\()/,
+				number: /\b[0-9][0-9a-z]*/i,
+				variable: /\w+/,
+				punctuation: /[^a-z0-9\w]/i,
+			}
+			
 			let button = document.querySelector("button")
-			let textarea = document.querySelector("textarea")
+			let editor = document.querySelector("#editor")
+			
+			let jar = new CodeJar(editor, element => Prism.highlightElement(element))
+			
 			button.addEventListener("click", () =>
 			{
 				button.disabled = true
-				textarea.disabled = true
+				editor.disabled = true
+				jar.destroy()
+				editor.contentEditable = false
 				import("./index.js")
 			})
 		</script>
+		<style>
+			body
+			{
+				background: #FAFAFA;
+				color: #333;
+			}
+			
+			pre { tab-size: 3; }
+			
+			#editor
+			{
+				min-height: 50vh;
+				padding: 0.5em;
+				border: 0.0625em solid #777;
+				border-radius: 0.5em;
+				white-space: pre !important;
+			}
+			
+			.token.punctuation { color: #999; }
+			.token.number, .token.boolean { color: #E90; }
+			.token.string, .token.char { color: #690; }
+			.token.operator, .token.comment, .token.prefix { color: #777; }
+			.token.keyword, .token.type { color: #905; }
+			.token.function { color: #07A; }
+		</style>
 	</head>
 	<body>
 		<p>
-			<textarea>fn JS.println(out string) voidptr</textarea>
-		</p>
-		<p>
 			<button>run</button>
 		</p>
-		<pre></pre>
+		<pre id="editor" class="language-v">fn JS.println(out any) voidptr&#xA;&#xA;fn fib(a int, b int)&#xA;{&#xA;&#x9;val := a + b&#xA;&#x9;JS.println(val)&#xA;&#x9;if val < 1000&#xA;&#x9;{&#xA;&#x9;&#x9;fib(b, val)&#xA;&#x9;}&#xA;}&#xA;&#xA;fib(0, 1)</pre>
+		<pre id="output"></pre>
 	</body>
 </html>

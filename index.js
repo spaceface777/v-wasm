@@ -1,12 +1,12 @@
 arguments_.push("-b", "js", "main.v")
-FS.writeFile("main.v", document.querySelector("textarea").value)
+FS.writeFile("main.v", document.querySelector("#editor").textContent)
 
-let pre = document.querySelector("pre")
+let output = document.querySelector("#output")
 
-let println = string => pre.append(string, "\n")
+let println = string => output.append(string, "\n")
 
 Module.addOnPostRun(() =>
 {
 	Function("println", FS.readFile("main.js", {encoding: "utf8"}))(println)
-	pre.append("\nReload to run another program.")
+	output.append("\nReload to run another program.")
 })
