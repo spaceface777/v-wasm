@@ -1,0 +1,3 @@
+[submodule "vc"]
+	path = vc
+	url = https://github.com/vlang/vc

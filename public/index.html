@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>V WASM Test</title>
+		<script type="module">
+			let button = document.querySelector("button")
+			let textarea = document.querySelector("textarea")
+			button.addEventListener("click", () =>
+			{
+				button.disabled = true
+				textarea.disabled = true
+				import("./index.js")
+			})
+		</script>
+	</head>
+	<body>
+		<p>
+			<textarea>fn JS.println(out string) voidptr</textarea>
+		</p>
+		<p>
+			<button>run</button>
+		</p>
+		<pre></pre>
+	</body>
+</html>
