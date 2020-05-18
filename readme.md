@@ -1,5 +1,5 @@
 ~~~ Bash
-git clone https://github.com/Zambonifofex/v-wasm
+git clone --recurse-submodules https://github.com/Zambonifofex/v-wasm
 cd v-wasm
 # Needs Emscripten installed.
 ./build.bash
