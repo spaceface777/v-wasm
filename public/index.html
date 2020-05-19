@@ -7,6 +7,7 @@
 		<script type="module">
 			import {CodeJar} from "https://cdn.pika.dev/codejar@2.0.0"
 			import Prism from "https://cdn.pika.dev/prismjs@1.20.0"
+			import run from "./index.js"
 			
 			Prism.languages.v =
 			{
@@ -46,14 +47,7 @@
 			
 			let jar = new CodeJar(editor, element => Prism.highlightElement(element))
 			
-			button.addEventListener("click", () =>
-			{
-				button.disabled = true
-				editor.disabled = true
-				jar.destroy()
-				editor.contentEditable = false
-				import("./index.js")
-			})
+			button.addEventListener("click", run)
 		</script>
 		<style>
 			body

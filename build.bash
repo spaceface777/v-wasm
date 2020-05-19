@@ -7,5 +7,6 @@ emcc \
 	placeholders.c vc/v.c \
 	-lm \
 	--post-js index.js \
-	-s 'EXTRA_EXPORTED_RUNTIME_METHODS=["addOnPostRun"]' \
+	-s 'EXTRA_EXPORTED_RUNTIME_METHODS=["callMain"]' \
+	-s INVOKE_RUN=0 \
 	-o public/index.js
