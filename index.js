@@ -6,10 +6,10 @@ let voutput = []
 let outv = ch => { if (ch !== null) voutput.push(ch) }
 FS.init(() => null, outv, outv)
 
-FS.writeFile("v", "")
-FS.symlink("v", "/proc/self/exe")
+FS.writeFile("/v", "")
+FS.symlink("/v", "/proc/self/exe")
 
-let println = string => output.append(string, "\n")
+let println = value => output.append(value + "\n")
 
 let success
 
