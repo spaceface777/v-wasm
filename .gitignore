@@ -6,6 +6,8 @@
 !/placeholders.c
 !/public
 !/public/index.html
+!/public/examples
+!/public/examples/*
 !/vc
 !/vc/**/*
 !/readme.md
