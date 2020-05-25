@@ -9,4 +9,5 @@ emcc -std=gnu11 -w -D__linux__ \
 	-s INVOKE_RUN=0 \
 	--post-js index.js \
 	--preload-file v/vlib@vlib \
-	-o public/index.js
+	-o public/index.js \
+	-O2
