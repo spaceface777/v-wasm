@@ -1,3 +1,6 @@
+[submodule "v"]
+	path = v
+	url = https://github.com/vlang/v
 [submodule "vc"]
 	path = vc
 	url = https://github.com/vlang/vc

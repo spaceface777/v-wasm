@@ -45,7 +45,7 @@ stop.addEventListener("click", () =>
 
 let success
 
-export default () =>
+play.addEventListener("click", () =>
 {
 	output.textContent = ""
 	voutput = []
@@ -70,7 +70,7 @@ export default () =>
 			else output.append(String(error))
 		}
 	}
-}
+})
 
 quit_ = (status, error) =>
 {
