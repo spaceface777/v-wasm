@@ -56,7 +56,7 @@ fn show(game [][]bool) {
 	}
 }
 
-mut game := [][]bool
+mut game := [[false]] // [][]bool
 
 for y in 0..h {
 	mut row := []bool{}
