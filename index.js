@@ -21,9 +21,6 @@ let lib =
 		log: value => output.append(value + "\n"),
 		clear: () => output.textContent = "",
 	},
-	set: (obj, key, value) => obj[key] = value,
-	get: (obj, i) => obj[i],
-	get2: (obj, i, j) => obj[i][j],
 	setInterval: (f, ms) =>
 	{
 		play.disabled = true
