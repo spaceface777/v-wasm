@@ -2,8 +2,10 @@
 
 set -e
 
+v v/cmd/v -o v.c
+
 emcc -std=gnu11 -w -D__linux__ \
-	placeholders.c vc/v.c \
+	placeholders.c v.c \
 	-lm \
 	-s 'EXTRA_EXPORTED_RUNTIME_METHODS=["callMain"]' \
 	-s INVOKE_RUN=0 \

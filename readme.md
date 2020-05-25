@@ -1,7 +1,7 @@
 ~~~ Bash
 git clone --recurse-submodules https://github.com/Zambonifofex/v-wasm
 cd v-wasm
-# Needs Emscripten installed.
+# Needs Emscripten and V pre‐installed.
 ./build.bash
 cd public
 python3 -m http.server
