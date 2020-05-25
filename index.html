@@ -1,1 +1,173 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>V WASM Test</title><meta name="viewport" content="width=device-width"><script type="module">import{CodeJar}from"https://cdn.pika.dev/codejar@2.0.0";import Prism from"https://cdn.pika.dev/prismjs@1.20.0";let v={},lang={comment:[/\/\*[^]*?(?:\*\/|$)/,/\/\/.*/],"leading-space":/(?<=\n[\t]*|^) /,"trailing-space":/ (?=\s*?\r?\n)/,string:[/r(["']).*?\1/,{pattern:/(["'])(?:\\.|(?!\1).)*\1/,inside:{tab:/\t/,escape:/\\./,interpolation:[{pattern:/\$\{.*?\}/i,inside:{escape:[/^\$\{/,/\}$/],rest:v}},{pattern:/\$[a-z](?:[a-z0-9]|(?:\.(?=[a-z])))*/i,inside:{"bare-interpolation":{pattern:/.*/,inside:{escape:/^\$/,rest:v}}}}]}}],tab:/\t/,prefix:/\bJS\b/,type:{pattern:/\b(?:bool|string|i8|i16|int|i64|i128|byte|u16|u32|u64|u128|rune|f32|f64|byteptr|voidptr|any|[A-Z][A-Za-z]*)\b/,lookbehind:!0},keyword:/\b(?:break|const|continue|defer|else|enum|fn|for|go|goto|if|import|in|interface|match|module|none|or|pub|return|struct|type|mut)\b/,boolean:/\b(?:true|false)\b/,function:/\w+(?=\s*\()/,number:/(?:\b|\.)[0-9](?:[0-9a-z]|\.(?!\.))*/i,variable:/\w+/,operator:/[\+\-\*\/\%\&\|\^\<\>\=\!\:\?]+/,punctuation:/[^a-z0-9\s]+/i};Object.assign(v,lang),Prism.languages.v=v;let play=document.querySelector("#play"),editor=document.querySelector("#editor"),fetchSnippet=async()=>{let e;location.search.startsWith("?url:")&&(e=location.search.slice("?url:".length)),e||(e="examples/hello.v");let t=await fetch(e);t.ok?(editor.textContent=await t.text(),new CodeJar(editor,e=>Prism.highlightElement(e))):editor.textContent="Failed to fetch URL."};fetchSnippet();</script><style>@import "https://fonts.googleapis.com/css2?family=Source+Code+Pro";@import "https://fonts.googleapis.com/css2?family=Hind";body{background: #FAFAFA;color: #333;font-family: "Hind", sans-serif;}pre{tab-size: 3;font-family: "Source Code Pro", monospace;min-height: 50vh;}#editor{padding: 0.5em;border: 0.0625em solid #777;border-radius: 0.5em;white-space: pre !important;resize: none !important;}#editor::selection, #editor *::selection{background: #BDF;}.token.punctuation{color: #999;}.token.number, .token.boolean, .token.escape{color: #E90;}.token.string, .token.char{color: #690;}.token.operator, .token.prefix{color: #888;}.token.comment{color: #777;}.token.keyword{color: #905;}.token.type{color: #A74;}.token.function{color: #07A;}.token.variable{color: #333;}.bare-interpolation{background: #E903; border-radius: 0.25em;}.bare-interpolation .escape{color: #A74;}.tab{background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 10"><path stroke="%23DDD" fill="none" d="M 1 3 3 5 1 7"/></svg>');background-repeat: no-repeat;background-position: left center;}.leading-space, .trailing-space{background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 6 6"><circle fill="%23DDD" r="1"/></svg>');background-repeat: no-repeat;background-position: left center;background-size: 1ch;}</style></head><body><details><summary>examples</summary><ul><li><a href="/">Hello, world!</a></li><li><a href="/?url:examples/fibonacci.v">Fibonacci</a></li><li><a href="/?url:examples/game-of-life.v">Game of Life</a></li></ul></details><pre id="editor" class="language-v">Loading...</pre><p><button id="play">play</button><button id="stop" disabled>stop</button></p><pre id="output"></pre><p>made by Zambonifofex〜 (<a href="https://github.com/Zambonifofex/v-wasm">repository on GitHub</a>)</p><script src="index.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>V WASM Test</title>
+		<meta name="viewport" content="width=device-width">
+		<script type="module">
+			import {CodeJar} from "https://cdn.pika.dev/codejar@2.0.0"
+			import Prism from "https://cdn.pika.dev/prismjs@1.20.0"
+			
+			let v = {}
+			
+			let lang =
+			{
+				comment:
+				[
+					/\/\*[^]*?(?:\*\/|$)/,
+					/\/\/.*/,
+				],
+				"leading-space": /(?<=\n[\t ]*|^) /,
+				"trailing-space": / (?=\s*?\r?\n)/,
+				string:
+				[
+					/r(["']).*?\1/,
+					{
+						pattern: /(["'])(?:\\.|(?!\1).)*\1/,
+						inside:
+						{
+							tab: /\t/,
+							escape: /\\./,
+							interpolation:
+							[
+								{
+									pattern: /\$\{.*?\}/i,
+									inside:
+									{
+										escape: [/^\$\{/, /\}$/],
+										rest: v,
+									},
+								},
+								{
+									pattern: /\$[a-z](?:[a-z0-9]|(?:\.(?=[a-z])))*/i,
+									inside:
+									{
+										"bare-interpolation":
+										{
+											pattern: /.*/,
+											inside: {escape: /^\$/, rest: v},
+										},
+									},
+								},
+							],
+						},
+					},
+				],
+				tab: /\t/,
+				prefix: /\bJS\b/,
+				type:
+				{
+					pattern: /\b(?:bool|string|i8|i16|int|i64|i128|byte|u16|u32|u64|u128|rune|f32|f64|byteptr|voidptr|any|[A-Z][A-Za-z]*)\b/,
+					lookbehind: true,
+				},
+				keyword: /\b(?:break|const|continue|defer|else|enum|fn|for|go|goto|if|import|in|interface|match|module|none|or|pub|return|struct|type|mut)\b/,
+				boolean: /\b(?:true|false)\b/,
+				function: /\w+(?=\s*\()/,
+				number: /(?:\b|\.)[0-9](?:[0-9a-z]|\.(?!\.))*/i,
+				variable: /\w+/,
+				operator: /[\+\-\*\/\%\&\|\^\<\>\=\!\:\?]+/,
+				punctuation: /[^a-z0-9\s]+/i,
+			}
+			
+			Object.assign(v, lang)
+			Prism.languages.v = v
+			
+			let play = document.querySelector("#play")
+			let editor = document.querySelector("#editor")
+			
+			let fetchSnippet = async () =>
+			{
+				let url
+				if (location.search.startsWith("?url:")) url = location.search.slice("?url:".length)
+				if (!url) url = "examples/hello.v"
+				
+				let response = await fetch(url)
+				if (response.ok)
+				{
+					editor.textContent = await response.text()
+					new CodeJar(editor, element => Prism.highlightElement(element))
+				}
+				else
+				{
+					editor.textContent = "Failed to fetch URL."
+				}
+			}
+			
+			fetchSnippet()
+		</script>
+		<style>
+			@import "https://fonts.googleapis.com/css2?family=Source+Code+Pro";
+			@import "https://fonts.googleapis.com/css2?family=Hind";
+			
+			body
+			{
+				background: #FAFAFA;
+				color: #333;
+				font-family: "Hind", sans-serif;
+			}
+			
+			pre
+			{
+				tab-size: 3;
+				font-family: "Source Code Pro", monospace;
+				min-height: 50vh;
+			}
+			
+			#editor
+			{
+				padding: 0.5em;
+				border: 0.0625em solid #777;
+				border-radius: 0.5em;
+				white-space: pre !important;
+				resize: none !important;
+			}
+			
+			#editor::selection, #editor *::selection { background: #BDF; }
+			
+			.token.punctuation { color: #999; }
+			.token.number, .token.boolean, .token.escape { color: #E90; }
+			.token.string, .token.char { color: #690; }
+			.token.operator, .token.prefix { color: #888; }
+			.token.comment { color: #777; }
+			.token.keyword { color: #905; }
+			.token.type { color: #A74; }
+			.token.function { color: #07A; }
+			.token.variable { color: #333; }
+			.bare-interpolation { background: #E903; border-radius: 0.25em; }
+			.bare-interpolation .escape { color: #A74; }
+			
+			.tab
+			{
+				background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 10"><path stroke="%23DDD" fill="none" d="M 1 3 3 5 1 7" /></svg>');
+				background-repeat: no-repeat;
+				background-position: left center;
+			}
+			
+			.leading-space, .trailing-space
+			{
+				background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 6 6"><circle fill="%23DDD" r="1" /></svg>');
+				background-repeat: no-repeat;
+				background-position: left center;
+				background-size: 1ch;
+			}
+		</style>
+	</head>
+	<body>
+		<details>
+			<summary>examples</summary>
+			<ul>
+				<li><a href="/">Hello, world!</a></li>
+				<li><a href="/?url:examples/fibonacci.v">Fibonacci</a></li>
+				<li><a href="/?url:examples/game-of-life.v">Game of Life</a></li>
+			</ul>
+		</details>
+		<pre id="editor" class="language-v">Loading...</pre>
+		<p>
+			<button id="play">play</button>
+			<button id="stop" disabled>stop</button>
+		</p>
+		<pre id="output"></pre>
+		<p>made by Zambonifofex〜 (<a href="https://github.com/Zambonifofex/v-wasm">repository on GitHub</a>)</p>
+		<script src="index.js"></script>
+	</body>
+</html>

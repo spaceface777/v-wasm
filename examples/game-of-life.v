@@ -1,7 +1,6 @@
+fn JS.setInterval(f fn (), ms int)
 fn JS.console.clear()
 fn clear() { JS.console.clear() }
-
-fn JS.setInterval(f fn (), ms int)
 
 const (
 	w = 30
