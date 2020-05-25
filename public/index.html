@@ -7,7 +7,6 @@
 		<script type="module">
 			import {CodeJar} from "https://cdn.pika.dev/codejar@2.0.0"
 			import Prism from "https://cdn.pika.dev/prismjs@1.20.0"
-			import run from "./index.js"
 			
 			let v = {}
 			
@@ -75,8 +74,6 @@
 			
 			let play = document.querySelector("#play")
 			let editor = document.querySelector("#editor")
-			
-			play.addEventListener("click", run)
 			
 			let fetchSnippet = async () =>
 			{
@@ -171,5 +168,6 @@
 		</p>
 		<pre id="output"></pre>
 		<p>made by Zambonifofex〜 (<a href="https://github.com/Zambonifofex/v-wasm">repository on GitHub</a>)</p>
+		<script src="index.js"></script>
 	</body>
 </html>

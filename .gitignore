@@ -8,6 +8,8 @@
 !/public/index.html
 !/public/examples
 !/public/examples/*
+!/v
+!/v/**/*
 !/vc
 !/vc/**/*
 !/readme.md
