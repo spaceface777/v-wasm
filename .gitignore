@@ -5,6 +5,9 @@
 !/index.js
 !/placeholders.c
 !/public
+!/public/index.js
+!/public/index.data
+!/public/index.wasm
 !/public/index.html
 !/public/examples
 !/public/examples/*
