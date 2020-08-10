@@ -1,8 +1,9 @@
 *
 !/.gitmodules
 !/.gitignore
-!/build.bash
+!/build.v
 !/index.js
+!/fmt.js
 !/placeholders.c
 !/public
 !/public/index.html

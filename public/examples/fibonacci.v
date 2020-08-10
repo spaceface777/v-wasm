@@ -1,9 +1,10 @@
-fn fib(a int, b int) {
-	val := a + b
-	println(val)
-	if val < 1000 {
-		fib(b, val)
+fn fib(n int) int {
+	if n <= 1 {
+		return n
 	}
+	return fib(n - 1) + fib(n - 2)
 }
 
-fib(0, 1)
+for i in 0 .. 10 {
+	println(fib(i))
+}

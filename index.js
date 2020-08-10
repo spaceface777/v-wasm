@@ -14,27 +14,36 @@ let stop = document.querySelector("#stop")
 
 let ids = []
 
-let lib =
-{
-	console:
-	{
+let lib = {
+	console: {
 		log: value => output.append(value + "\n"),
+		error: value => output.append(value + "\n"),
 		clear: () => output.textContent = "",
 	},
-	setInterval: (f, ms) =>
-	{
+	setTimeout: (f, ms) => {
 		play.disabled = true
 		stop.disabled = false
-		ids.push(setInterval(f, ms))
+		let id = setTimeout(() => {
+			f()
+			ids = ids.filter(v => v !== id)
+			if (ids.length === 0) {
+				play.disabled = false
+				stop.disabled = true
+			}
+		}, ms)
+		ids.push(id)
 	},
+	process: {
+		stdout: { write: s => output.append(s) },
+		stderr: { write: s => output.append(s) },
+	}
 }
 
 let libKeys = Object.keys(lib)
 let libValues = libKeys.map(key => lib[key])
 
-stop.addEventListener("click", () =>
-{
-	for (let id of ids) clearInterval(id)
+stop.addEventListener("click", () => {
+	for (let id of ids) clearTimeout(id)
 	ids = []
 	play.disabled = false
 	stop.disabled = true
@@ -42,26 +51,28 @@ stop.addEventListener("click", () =>
 
 let success
 
-play.addEventListener("click", () =>
-{
+play.addEventListener("click", () => {
 	output.textContent = ""
 	voutput = []
-	
+
 	FS.writeFile("main.v", editor.textContent)
 	ENV.TERM = "dumb"
-	
+
 	success = true
-	
+
+	const t0 = performance.now()
 	Module.callMain(["-b", "js", "main.v"])
-	
-	if (success)
-	{
-		try
-		{
-			Function(...libKeys, FS.readFile("main.js", {encoding: "utf8"}))(...libValues)
+	const t1 = performance.now()
+	console.log(`Compilation took ${(t1 - t0).toFixed(2)}ms.`)
+
+	if (success) {
+		try {
+			const t0 = performance.now()
+			Function(...libKeys, FS.readFile("main.js", { encoding: "utf8" }))(...libValues)
+			const t1 = performance.now()
+			console.log(`Execution took ${(t1 - t0).toFixed(2)}ms.`)
 		}
-		catch (error)
-		{
+		catch (error) {
 			output.append("\n")
 			if (error instanceof Error) output.append(error.stack)
 			else output.append(String(error))
@@ -69,9 +80,10 @@ play.addEventListener("click", () =>
 	}
 })
 
-quit_ = (status, error) =>
-{
-	success = false
-	output.append(String.fromCodePoint(...voutput))
-	throw error
+quit_ = (status, error) => {
+	if (status !== 0) {
+		success = false
+		output.append(String.fromCodePoint(...voutput))
+		throw error
+	}
 }
